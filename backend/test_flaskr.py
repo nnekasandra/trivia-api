@@ -69,14 +69,14 @@ class TriviaTestCase(unittest.TestCase):
     #     self.assertEqual(data["success"], True)
     #     self.assertEqual(data["question_deleted"], 5)   
 
-    def test_delete_question_not_found(self):
-        response = self.client().delete('/questions/5') 
-        data = json.loads(response.data) 
+    # def test_delete_question_not_found(self):
+    #     response = self.client().delete('/questions/5') 
+    #     data = json.loads(response.data) 
 
-        question = Question.query.filter(Question.id == 5).one_or_none()
-        self.assertEqual(response.status_code, 422)
-        self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], 'unprocessable entity')
+    #     question = Question.query.filter(Question.id == 5).one_or_none()
+    #     self.assertEqual(response.status_code, 422)
+    #     self.assertEqual(data["success"], False)
+    #     self.assertEqual(data["message"], 'unprocessable entity')
 
     def test_create_new_question(self):
         response = self.client().post('/questions', json=self.new_question)
@@ -86,7 +86,53 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)   
         self.assertTrue(data["question_id"])
         self.assertTrue((data["total_question"]))
-           
+
+    def test_create_new_question_on_wrong_endpoint(self):
+        response = self.client().post('/questions/9', json=self.new_question)
+        data = json.loads(response.data) 
+
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"],'method not allowed')
+
+    def test_search_questions_with_results(self):
+        response = self.client().post('/questions/search', json={"searchTerm": "title"}) 
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)   
+        self.assertEqual(data["success"], True)
+        self.assertTrue(data["questions"])
+
+    def test_search_questions_without_results(self):
+        response = self.client().post('/questions/search', json={"searchTerm": "fang"}) 
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)   
+        self.assertEqual(data["success"], True)
+        self.assertEqual(data["questions"], [])
+
+    def test_get_questions_in_category(self):
+        response = self.client().get('categories/1/questions')
+        data = json.loads(response.data)
+
+        questions = Question.query.filter(Question.category == 1)
+        self.assertEqual(response.status_code, 200)   
+        self.assertEqual(data["success"], True)
+
+    def test_get_questions_in_category(self):
+        response = self.client().get('categories/0/questions')
+        data = json.loads(response.data)
+
+        questions = Question.query.filter(Question.category == 3)
+        self.assertEqual(response.status_code, 422)   
+        self.assertEqual(data["success"], False)
+
+    def test_quiz_play(self):
+        response = self.client().post('/quizzes', json={'prev': 2, 'category':2})
+        data = json.loads(response.data) 
+
+        self.assertEqual(response.status_code, 200)   
+        self.assertEqual(data["success"], True)    
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

@@ -160,19 +160,21 @@ def create_app(test_config=None):
     """
     @app.route('/questions/search', methods=['POST'])
     def search_questions():
-            body = request.get_json()
-            search_term = body.get('searchTerm')
-            #questions = Question.query.filter(Question.question.ilike( f'%{search_term}%' )).all()
-            questions = Question.query.order_by(Question.id).filter(
-                    Question.question.ilike("%{}%".format(search_term))
-                )
-            current_questions = pagination(questions)
-            return jsonify({
-                'success': True,
-                'questions': current_questions,
-                'total_question': len(current_questions),
-                'current_category': 'All'
-            })
+            try:
+                body = request.get_json()
+                search_term = body.get('searchTerm')
+                questions = Question.query.order_by(Question.id).filter(
+                        Question.question.ilike("%{}%".format(search_term))
+                    )
+                current_questions = pagination(questions)
+                return jsonify({
+                    'success': True,
+                    'questions': current_questions,
+                    'total_question': len(current_questions),
+                    'current_category': 'All'
+                })
+            except:
+                abort(422)    
     """
     @TODO:
     Create a GET endpoint to get questions based on category.
@@ -183,15 +185,18 @@ def create_app(test_config=None):
     """
     @app.route('/categories/<int:category_id>/questions')
     def get_by_category(category_id):
-        category_ide = Category.query.get_or_404(category_id)
-        questions = Question.query.filter(Question.category == category_id)
-        current_questions = pagination(questions)
-        return jsonify({
-                'success': True,
-                'questions': current_questions,
-                'total_question': len(current_questions),
-                'current_category': category_ide.type
-            })
+        try:
+            category_ide = Category.query.get_or_404(category_id)
+            questions = Question.query.filter(Question.category == category_id)
+            current_questions = pagination(questions)
+            return jsonify({
+                    'success': True,
+                    'questions': current_questions,
+                    'total_question': len(current_questions),
+                    'current_category': category_ide.type
+                })
+        except:
+            abort(422)        
     """
     @TODO:
     Create a POST endpoint to get questions to play the quiz.
