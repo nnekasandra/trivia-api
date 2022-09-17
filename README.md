@@ -1,23 +1,48 @@
-# API Development and Documentation Final Project
+# API Development and Documentation Final Project By Udacity Nanodegree Program
 
 ## Trivia App
 
-Udacity is invested in creating bonding experiences for its employees and students. A bunch of team members got the idea to hold trivia on a regular basis and created a webpage to manage the trivia app and play the game, but their API experience is limited and still needs to be built out.
+### Introduction
 
-That's where you come in! Help them finish the trivia app so they can start holding trivia and seeing who's the most knowledgeable of the bunch. The application must:
+Trivia App as the name goes is a Q & A platform where users can come and answer quizzes. It was a final project in the Udacity **API Development and Documentation** lesson. I implemented my knowledge about building and testing out API endpoints into this project.
 
-1. Display questions - both all questions and by category. Questions should show the question, category and difficulty rating by default and can show/hide the answer.
-2. Delete questions.
-3. Add questions and require that they include question and answer text.
-4. Search for questions based on a text query string.
-5. Play the quiz game, randomizing either all questions or within a specific category.
+![App Screenshot] (image.png)
 
-Completing this trivia app will give you the ability to structure plan, implement, and test an API - skills essential for enabling your future applications to communicate with others.
+In this app, users are able to get questions they want to answer. Questions are arranged by category. They can add new questions to the trivia database, delete questions, search for questions and play trivia game by category.
 
-## Starting and Submitting the Project
 
-[Fork](https://help.github.com/en/articles/fork-a-repo) the project repository and [clone](https://help.github.com/en/articles/cloning-a-repository) your forked repository to your machine. Work on the project locally and make sure to push all your changes to the remote repository before submitting the link to your repository in the Classroom.
+## Getting Started
 
+The project has both the frontend and backend servers running on `localhost:3000` and `localhost:5000` respectively.
+If you want to have a feel of how the project is working, [Fork](https://help.github.com/en/articles/fork-a-repo) the project repository and [clone](https://help.github.com/en/articles/cloning-a-repository) your forked repository to your machine and work locally.
+
+### Backend Pre-requisite
+
+Developers using this project should already have Python3, pip and node installed on their local machines.
+
+#### Installation 
+* Set up a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) for the project
+* Install all the dependencies required to smoothly run the project.
+
+    ```pip install -r requirements.txt```
+
+Run the flask App and see the app is inside the flaskr folder in the backend folder. See [here](https://flask.palletsprojects.com/en/2.2.x/quickstart) for instructions on how to set up and run a flask app.
+
+#### Database Set up
+This project uses postgres database. Ensure you have postgres database set up and running. Check [here](https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guides/html/English/Content/Getting_Started/Configure/_TRN_Set_up_PostgreSQL.htm) for instructions to set up postgres server.
+From the backend terminal run:
+    ```psql trivia < trivia.psql```
+This populates the questions into the database for api manipulations.
+
+### Frontend Pre-requisite
+The frontend is built with React so install npm dependencies and start the frontend server. 
+In the frontend terminal, run:
+
+#### Installation
+```
+    npm install
+    npm start
+```    
 ## About the Stack
 
 We started the full stack application for you. It is designed with some key functional areas:
