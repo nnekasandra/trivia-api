@@ -59,24 +59,25 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data["success"], True)
 
-    # def test_delete_question(self):
-    #     response = self.client().delete('/questions/5') 
-    #     data = json.loads(response.data) 
 
-    #     question = Question.query.filter(Question.id == 5).one_or_none()
+    def test_delete_question(self):
+        response = self.client().delete('/questions/5') 
+        data = json.loads(response.data) 
 
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(data["success"], True)
-    #     self.assertEqual(data["question_deleted"], 5)   
+        question = Question.query.filter(Question.id == 5).one_or_none()
 
-    # def test_delete_question_not_found(self):
-    #     response = self.client().delete('/questions/5') 
-    #     data = json.loads(response.data) 
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(data["question_deleted"], 5)   
 
-    #     question = Question.query.filter(Question.id == 5).one_or_none()
-    #     self.assertEqual(response.status_code, 422)
-    #     self.assertEqual(data["success"], False)
-    #     self.assertEqual(data["message"], 'unprocessable entity')
+    def test_delete_question_not_found(self):
+        response = self.client().delete('/questions/5') 
+        data = json.loads(response.data) 
+
+        question = Question.query.filter(Question.id == 5).one_or_none()
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], 'unprocessable entity')
 
     def test_create_new_question(self):
         response = self.client().post('/questions', json=self.new_question)
@@ -128,11 +129,11 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
 
     def test_quiz_play(self):
-        response = self.client().post('/quizzes', json={'prev': 2, 'category':2})
+        response = self.client().post('/quizzes', json={'prev': 2, 'category':0})
         data = json.loads(response.data) 
 
-        self.assertEqual(response.status_code, 200)   
-        self.assertEqual(data["success"], True)    
+        self.assertEqual(response.status_code, 422)   
+        self.assertEqual(data["success"], False)    
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

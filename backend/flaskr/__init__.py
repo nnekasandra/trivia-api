@@ -66,7 +66,7 @@ def create_app(test_config=None):
             }  
             )
         except:
-            abort(422)    
+            abort(404)    
     """
     @TODO:
     Create an endpoint to handle GET requests for questions,
@@ -208,28 +208,33 @@ def create_app(test_config=None):
     one question at a time is displayed, the user is allowed to answer
     and shown whether they were correct or not.
     """
+
     @app.route('/quizzes', methods=['POST'])
-    def play_quiz():
+    def play_trivia():
         body = request.get_json()
-        answer = body.get('answer')
-        prev = body.get('previous_questions')
-        prev.insert(0, 0) 
-        category = body.get('quiz_category')
-        print(prev, category, answer)
-
-        if (category['id'] == 0):
-            questions = Question.query.filter(Question.id != prev.index(0, -1)).all()
-        else:
-            questions = Question.query.filter(Question.category == category['id'], Question.id != prev.index(0, -1)).all() 
-
-        next_question = random.choice(questions).format()
-        print(next_question)
-        return jsonify({
-            'success': True,
-            'prev_question': prev,
-            'quiz_category': category,
-            'random_question': next_question
-        })
+        
+        quiz_category = body.get('quiz_category')
+        previous_questions = body.get('previous_questions')
+      
+        try:
+            
+            if quiz_category['id'] == 0:
+                        questions = Question.query.filter(
+                                Question.id.notin_(previous_questions)).all()
+                        
+            else:
+                        questions = Question.query.filter(
+                                Question.category == quiz_category['id'],
+                                Question.id.notin_(previous_questions)).all()
+                        
+            next_question = random.choice(questions).format()
+                    
+            return jsonify({
+                        'success': True,
+                        'question': next_question
+                    })
+        except:
+                abort(422)
         
     """
     @TODO:
