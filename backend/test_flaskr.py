@@ -14,8 +14,7 @@ class TriviaTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        # self.database_name = "trivia_test"
-        self.database_name = 'trivia'
+        self.database_name = 'trivia-test'
         self.database_path = "postgresql://{}:{}@{}/{}".format(
             "postgres", "nneka2000", "localhost:5432", self.database_name
         )
@@ -37,14 +36,6 @@ class TriviaTestCase(unittest.TestCase):
     """
     TODO
     Write at least one test for each test for successful operation and for expected errors.
-    def test_get_paginated_books(self):
-        res = self.client().get("/books")
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data["success"], True)
-        self.assertTrue(data["total_books"])
-        self.assertTrue(len(data["books"]))
     """
     def test_question_retrival(self):
         response = self.client().get('/questions')
