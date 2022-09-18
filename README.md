@@ -6,7 +6,7 @@
 
 Trivia App as the name goes is a Q & A platform where users can come and answer quizzes. It was a final project in the Udacity **API Development and Documentation** lesson. I implemented my knowledge about building and testing out API endpoints into this project.
 
-![App Screenshot] (image.png)
+![App Screenshot](https://cdn.hashnode.com/res/hashnode/image/upload/v1663517568480/CG88z0PZ4.png)
 
 In this app, users are able to get questions they want to answer. Questions are arranged by category. They can add new questions to the trivia database, delete questions, search for questions and play trivia game by category.
 
@@ -30,24 +30,71 @@ Run the flask App and see the app is inside the flaskr folder in the backend fol
 
 #### Database Set up
 This project uses postgres database. Ensure you have postgres database set up and running. Check [here](https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guides/html/English/Content/Getting_Started/Configure/_TRN_Set_up_PostgreSQL.htm) for instructions to set up postgres server.
+
 From the backend terminal run:
-    ```psql trivia < trivia.psql```
+
+    ```
+    psql trivia < trivia.psql
+
+    ```
 This populates the questions into the database for api manipulations.
 
 ### Frontend Pre-requisite
 The frontend is built with React so install npm dependencies and start the frontend server. 
-In the frontend terminal, run:
+
 
 #### Installation
+In the frontend terminal, run:
+
 ```
     npm install
     npm start
 ```    
-## About the Stack
+## API Reference
 
-We started the full stack application for you. It is designed with some key functional areas:
+### Introduction
+The frontend consumes data from the backend and database using API the different API endpoints. There are endpoints to retrieve questions, categories, delete questions and so on.
 
-### Backend
+### Getting Started
+*Base URL*: This project has not been deployed but the base url locally is `localhost:3000`.
+*API KEY* : This API does not use API key and authenthication.
+
+### Error Handling 
+There are different error that were specifically called out in this API
+| Errors | Meaning | Description |
+| ----------- | ----------- | ------------
+| 500 | Internal Server Error | The server encountered some glitches and can not complete the requests. |
+| 404 | Not found | The particular response/resource you are requesting is not available on the server. |
+| 422 | Unprocessible Entity | Your requests is not properly formatted so the server can not process it. |
+| 405 | Method not allowed | The method on the endpoint is not the correct method. |
+| 400 | Bad Request | The request sent is bad and cannot be processed by the server. |
+
+### Resource Endpoints Library
+There are various endpoints for the requests you want to carry out.
+
+#### GET Requests
+```
+`GET /categories`
+*Sample Request* : curl http://127.0.0.1:5000/categories
+* Fetches and retrieves all the endpoints available.
+* Request arguments: None
+* Returns: a dictionary with the id and type of the category arranged as key value pairs.
+
+*Sample Response*
+```
+{
+  'categories': 
+  { 
+    '1' : "Science",
+    '2' : "Art",
+    '3' : "Geography",
+    '4' : "History",
+    '5' : "Entertainment",
+    '6' : "Sports" 
+  }
+}
+```
+```
 
 The [backend](./backend/README.md) directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in `__init__.py` to define your endpoints and can reference models.py for DB and SQLAlchemy setup. These are the files you'd want to edit in the backend:
 
