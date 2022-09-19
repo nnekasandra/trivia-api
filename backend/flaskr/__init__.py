@@ -112,7 +112,16 @@ def create_app(test_config=None):
         new_category = body.get('category')
         new_difficulty = body.get('difficulty')
 
-        question = Question(question=new_question, answer=new_answer,  category=new_category, difficulty=new_difficulty)
+        if (not new_question or not new_answer  or
+        not new_category or not new_difficulty):
+         abort(422)   
+
+        question = Question(
+        question=new_question, 
+        answer=new_answer, 
+        category=new_category,
+        difficulty=new_difficulty)
+
         question.insert()   
 
         return jsonify({
