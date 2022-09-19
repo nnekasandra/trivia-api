@@ -24,20 +24,22 @@ Developers using this project should already have Python3, pip and node installe
 * Set up a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) for the project
 * Install all the dependencies required to smoothly run the project.
 
-    ```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+
+```
 
 Run the flask App and see the app is inside the flaskr folder in the backend folder. See [here](https://flask.palletsprojects.com/en/2.2.x/quickstart) for instructions on how to set up and run a flask app.
 
 #### Database Set up
 This project uses postgres database. Ensure you have postgres database set up and running. Check [here](https://www.microfocus.com/documentation/idol/IDOL_12_0/MediaServer/Guides/html/English/Content/Getting_Started/Configure/_TRN_Set_up_PostgreSQL.htm) for instructions to set up postgres server.
 
-From the backend terminal run:
-
-    ```
+From the backend terminal run to populate the questions into the database for api manipulations
+ ```
     psql trivia < trivia.psql
 
-    ```
-This populates the questions into the database for api manipulations.
+```
+
 
 ### Frontend Pre-requisite
 The frontend is built with React so install npm dependencies and start the frontend server. 
@@ -56,8 +58,8 @@ In the frontend terminal, run:
 The frontend consumes data from the backend and database using API the different API endpoints. There are endpoints to retrieve questions, categories, delete questions and so on.
 
 ### Getting Started
-*Base URL*: This project has not been deployed but the base url locally is `localhost:3000`.
-*API KEY* : This API does not use API key and authenthication.
+**Base URL**: This project has not been deployed but the base url locally is `localhost:3000`.
+**API KEY** : This API does not use API key and authenthication.
 
 ### Error Handling 
 There are different error that were specifically called out in this API
@@ -75,13 +77,13 @@ There are various endpoints for the requests you want to carry out.
 #### GET Requests
 ```
 `GET /categories`
-*Sample Request* : curl http://127.0.0.1:5000/categories
+Sample Request: curl http://127.0.0.1:5000/categories
 * Fetches and retrieves all the endpoints available.
-* Request arguments: None
+* Request arguments: None.
 * Returns: a dictionary with the id and type of the category arranged as key value pairs.
 
-*Sample Response*
-```
+Sample Response
+
 {
   'categories': 
   { 
@@ -94,28 +96,174 @@ There are various endpoints for the requests you want to carry out.
   }
 }
 ```
+
+```
+GET '/questions?page=${integer}'
+Sample Request: curl http://127.0.0.1:5000/questions or curl  http://127.0.0.1:5000/questions?page=1
+* Fetches and retrieves all questions available paginated 10 books per page
+* Return argument: Page
+* Returns: dictionary with questions, total questions available, dictionary of categories in key value pairs and current category
+
+Sample Response
+
+{
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "current_category": "History", 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }
+    ],
+  "success": true, 
+  "total_questions": 19
+}  
 ```
 
-The [backend](./backend/README.md) directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in `__init__.py` to define your endpoints and can reference models.py for DB and SQLAlchemy setup. These are the files you'd want to edit in the backend:
+```
+GET 'categories/${id}/questions'
+Sample Request: curl http://127.0.0.1:5000/categories/2/questions
+* Fetches questions according to the categories
+* Request Arguments: id - integer
+* Returns: A dictionary of questions belonging to the category, total questions in the category and the category type.
 
-1. `backend/flaskr/__init__.py`
-2. `backend/test_flaskr.py`
+Sample Response
+{
+  "current_category": "Art", 
+  "questions": [
+    {
+      "answer": "Escher", 
+      "category": 2, 
+      "difficulty": 1, 
+      "id": 16, 
+      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+    }, 
+    {
+      "answer": "Mona Lisa", 
+      "category": 2, 
+      "difficulty": 3, 
+      "id": 17, 
+      "question": "La Giaconda is better known as what?"
+    }, 
+    {
+      "answer": "One", 
+      "category": 2, 
+      "difficulty": 4, 
+      "id": 18, 
+      "question": "How many paintings did Van Gogh sell in his lifetime?"
+    }, 
+    {
+      "answer": "Jackson Pollock", 
+      "category": 2, 
+      "difficulty": 2, 
+      "id": 19, 
+      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+    }
+  ], 
+  "success": true, 
+  "total_question": 4
+}
+```
 
-> View the [Backend README](./backend/README.md) for more details.
+#### POST Requests
+```
+POST 'questions'
+Sample Request: 
+`curl -X POST -H "Content-Type: application/json" -d '{"question":"Which subject studies living and non-living things?", "answer":"Biology", "category":"1", "difficulty":"1"}' http://127.0.0.1:5000/questions  |jq '.'`
+* Sends a post request to create a new question
 
-### Frontend
+Sample Request Body
+{
+      "answer": "Jackson Pollock", 
+      "category": 2, 
+      "difficulty": 2, 
+      "id": 19, 
+      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+}
 
-The [frontend](./frontend/README.md) directory contains a complete React frontend to consume the data from the Flask server. If you have prior experience building a frontend application, you should feel free to edit the endpoints as you see fit for the backend you design. If you do not have prior experience building a frontend application, you should read through the frontend code before starting and make notes regarding:
+```
 
-1. What are the end points and HTTP methods the frontend is expecting to consume?
-2. How are the requests from the frontend formatted? Are they expecting certain parameters or payloads?
+```
+POST '/questions'
+Sample Request: 
+curl -X POST -H"Content-Type: application/json" -d '{"searchTerm":"american"}'  http://127.0.0.1:5000/questions/search |jq '.'
+* Sends a post request in order to search for a specific question by search term 
+* Request Body: 
+{
+    'searchTerm': 'this is the term the user is looking for'
+}
+* Returns: dictionary containing an array of questions, a number of totalQuestions that met the search term and the current category string 
 
-Pay special attention to what data the frontend is expecting from each API response to help guide how you format your API. The places where you may change the frontend behavior, and where you should be looking for the above information, are marked with `TODO`. These are the files you'd want to edit in the frontend:
+Sample Request Body
+{
+    'questions': [
+    {
+      "answer": "Jackson Pollock", 
+      "category": 2, 
+      "difficulty": 2, 
+      "id": 19, 
+      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+    }
+    ],
+    'total_questions': 100,
+    'current_category': 'Entertainment'
+}
 
-1. `frontend/src/components/QuestionView.js`
-2. `frontend/src/components/FormView.js`
-3. `frontend/src/components/QuizView.js`
+```
 
-By making notes ahead of time, you will practice the core skill of being able to read and understand code and will have a simple plan to follow to build out the endpoints of your backend API.
+```
+POST '/quizzes'
+* Sends a post request in order to get the next question 
+* Sample Request Body:
 
-> View the [Frontend README](./frontend/README.md) for more details.
+{
+    'previous_questions':  an array of question id's such as [1, 4, 20, 15]
+    'quiz_category': a string of the current category 
+}
+* Returns: a single new question object 
+
+Sample Response
+{
+    'question': {
+        'id': 1,
+        'question': 'This is a question',
+        'answer': 'This is an answer', 
+        'difficulty': 5,
+        'category': 4
+    }
+}
+
+```
+#### DELETE Request
+```
+DELETE '/questions/${id}'
+Sample Request: curl -X DELETE http://127.0.0.1:5000/questions/2 |jq '.'
+* Deletes a specified question using the id of the question
+* Request Arguments: id - integer
+* Returns: specific id of question deleted and the total question remaining in the database 
+
+Sample Response
+{
+    'total_questions': 20,
+    'question_deleted': 2
+}
+```
+### Deployment
+N/A
+
+## Author (s)
+Njoku Nneka Sandra
+
+### Acknowledgement
+Specially thankful to ALX-T for this opportunity to improve my skillset. Also to the Udacity team for the well structured learning environment that helped me pull through with this project. I am thankful to my friends Livinus and Edidiong for helping out when I encountered blockers during the course of doing this project.
+
