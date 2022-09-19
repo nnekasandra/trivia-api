@@ -265,5 +265,5 @@ N/A
 Njoku Nneka Sandra
 
 ### Acknowledgement
-Specially thankful to ALX-T for this opportunity to improve my skillset. Also to the Udacity team for the well structured learning environment that helped me pull through with this project. I am thankful to my friends Livinus and Edidiong for helping out when I encountered blockers during the course of doing this project.
+Specially thankful to God Almighty for this growth opportunity. To the ALX-T for this opportunity to improve my skillset. Also to the Udacity team for the well structured learning environment that helped me pull through with this project. I am thankful to my friends Livinus and Edidiong for helping out when I encountered blockers during the course of doing this project.
 
