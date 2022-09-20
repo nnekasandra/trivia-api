@@ -27,8 +27,20 @@ class TriviaTestCase(unittest.TestCase):
             # create all tables
             self.db.create_all()
 
-        self.new_question = {"question": "How many states does matter have?", "answer": "three states", "category": 5, "difficulty": 1}    
-    
+        self.new_question = {
+         "question": "How many states does matter have?",
+         "answer": "three states", 
+         "category": 5, 
+         "difficulty": 1
+        }    
+        self.category = {
+            "1": "Science", 
+            "2": "Art", 
+            "3": "Geography", 
+            "4": "History", 
+            "5": "Entertainment", 
+            "6": "Sports"
+        }    
     def tearDown(self):
         """Executed after reach test"""
         pass
@@ -52,8 +64,15 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'unprocessable entity')
 
-    def test_categories_retrival(self):
+    def test_categories_retrieval(self):
         response =self.client().get('/categories')
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["success"], True)
+
+    def test_categories_retrieval_failure(self):
+        response =self.client().get('/categories', json=len(self.category) == 0)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -61,14 +80,14 @@ class TriviaTestCase(unittest.TestCase):
 
 
     def test_delete_question(self):
-        response = self.client().delete('/questions/2') 
+        response = self.client().delete('/questions/38') 
         data = json.loads(response.data) 
 
-        question = Question.query.filter(Question.id == 2).one_or_none()
+        question = Question.query.filter(Question.id == 38).one_or_none()
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data["success"], True)
-        self.assertEqual(data["question_deleted"], 2)   
+        self.assertEqual(data["question_deleted"], 38)   
 
     def test_delete_question_not_found(self):
         response = self.client().delete('/questions/5') 
@@ -129,7 +148,14 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], False)
 
     def test_quiz_play(self):
-        response = self.client().post('/quizzes', json={'prev': 2, 'category':0})
+        response = self.client().post('/quizzes', json={'previous_questions': [], 'quiz_category':1})
+        data = json.loads(response.data) 
+
+        self.assertEqual(response.status_code, 422)   
+        self.assertEqual(data["success"], False) 
+
+    def test_quiz_play_success(self):
+        response = self.client().post('/quizzes', json={'previous_questions': [24], 'quiz_category':5})
         data = json.loads(response.data) 
 
         self.assertEqual(response.status_code, 422)   

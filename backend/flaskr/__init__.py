@@ -176,7 +176,7 @@ def create_app(test_config=None):
         
         quiz_category = body.get('quiz_category')
         previous_questions = body.get('previous_questions')
-      
+        
         try:
             
             if quiz_category['id'] == 0:
