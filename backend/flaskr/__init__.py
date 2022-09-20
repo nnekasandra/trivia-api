@@ -187,9 +187,11 @@ def create_app(test_config=None):
                 questions = Question.query.filter(
                 Question.category == quiz_category['id'],
                 Question.id.notin_(previous_questions)).all()
-                
+                        
+            if len(questions) > 0:
                 next_question = random.choice(questions).format()
-      
+            else:
+                next_question = None        
             return jsonify({
                     'success': True,
                     'question': next_question
