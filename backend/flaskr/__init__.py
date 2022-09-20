@@ -138,8 +138,8 @@ def create_app(test_config=None):
                 body = request.get_json()
                 search_term = body.get('searchTerm')
                 questions = Question.query.order_by(Question.id).filter(
-                        Question.question.ilike("%{}%".format(search_term))
-                    )
+                            Question.question.ilike("%{}%".format(search_term))
+                            )
                 current_questions = pagination(questions)
                 return jsonify({
                     'success': True,
@@ -180,22 +180,22 @@ def create_app(test_config=None):
         try:
             
             if quiz_category['id'] == 0:
-                        questions = Question.query.filter(
-                                    Question.id.notin_(previous_questions)).all()
+                questions = Question.query.filter(
+                Question.id.notin_(previous_questions)).all()
                         
             else:
                 questions = Question.query.filter(
-                            Question.category == quiz_category['id'],
-                            Question.id.notin_(previous_questions)).all()
-                        
-            next_question = random.choice(questions).format()
-                    
+                Question.category == quiz_category['id'],
+                Question.id.notin_(previous_questions)).all()
+                
+                next_question = random.choice(questions).format()
+      
             return jsonify({
-                        'success': True,
-                        'question': next_question
+                    'success': True,
+                    'question': next_question
                     })
         except:
-                abort(422)
+            abort(422)
         
     """
     @DONE
